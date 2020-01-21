@@ -80,56 +80,43 @@ class EmojiArtViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-
-            //look for the directory in the sandbox
-            if let url = try? FileManager.default.url(
-                for: .documentDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-            ).appendingPathComponent("Untitled.json") {
-                print("URL: \(url) ")
-                
-                if let jsonData = try? Data(contentsOf: url) {
-                    emojiArt = EmojiArt(json: jsonData)
-                }
-                
-            }
-        
-        
-    }
-    
-    @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        if let json = emojiArt?.json {
-            if let jsonString = String(data: json, encoding: .utf8){
-                print("Json to save: \(jsonString)")
-            }
-            //look for the directory in the sandbox
-            if let url = try? FileManager.default.url(
-                for: .documentDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-            ).appendingPathComponent("Untitled.json") {
-                print("URL: \(url) ")
-                do {
-                    try json.write(to: url)
-                    print("Saved successfully!")
-                } catch {
-                    print("couldn't save \(error)")
-                }
-                
-            }
+        //look for the directory in the sandbox
+        if let url = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ).appendingPathComponent("Untitled.json") {
+            print("URL: \(url) ")
+            document = EmojiArtDocument(fileURL: url)
         }
     }
     
+    var document: EmojiArtDocument?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        document?.open(completionHandler: {success in
+            if success {
+                self.title = self.document?.localizedName
+                self.emojiArt = self.document?.emojiArt
+            }
+        })
+    }
+    
+    @IBAction func saveAction(_ sender: UIBarButtonItem? = nil) {
+        document?.emojiArt = emojiArt
+        if document?.emojiArt != nil {
+            document?.updateChangeCount(.done)
+        }
+    }
+    
+    @IBAction func closeAction(_ sender: UIBarButtonItem) {
+        saveAction()
+        document?.close()
+    }
     
     // MARK: - Model
     var emojiArt: EmojiArt? {
