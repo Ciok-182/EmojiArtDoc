@@ -11,6 +11,8 @@ import UIKit
 
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
     
+    var template: URL?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,6 +20,20 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         
         allowsDocumentCreation = true
         allowsPickingMultipleItems = false
+        
+        template = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ).appendingPathComponent("Untitled.json")
+        
+        if template != nil {
+            allowsDocumentCreation = FileManager.default.createFile(atPath: template!.path, contents: Data())
+        }
+
+        
+        
         
         // Update the style of the UIDocumentBrowserViewController
         // browserUserInterfaceStyle = .dark
@@ -32,7 +48,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     // MARK: UIDocumentBrowserViewControllerDelegate
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        let newDocumentURL: URL? = nil
+        /*let newDocumentURL: URL? = nil
         
         // Set the URL for the new document here. Optionally, you can present a template chooser before calling the importHandler.
         // Make sure the importHandler is always called, even if the user cancels the creation request.
@@ -40,7 +56,8 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
             importHandler(newDocumentURL, .move)
         } else {
             importHandler(nil, .none)
-        }
+        }*/
+        importHandler(template, .copy)
     }
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
@@ -65,6 +82,15 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     func presentDocument(at documentURL: URL) {
         
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let documentVC = storyBoard.instantiateViewController(identifier: "NavigationControllerEmoji")
+
+        if let emojiArtViewController = documentVC.contents as? EmojiArtViewController{
+            emojiArtViewController.document = EmojiArtDocument(fileURL: documentURL)
+        }
+        
+        present(documentVC, animated: true, completion: nil)
+        
         /*let documentViewController = storyBoard.instantiateViewController(withIdentifier: "DocumentViewController") as! DocumentViewController
         documentViewController.document = Document(fileURL: documentURL)
         documentViewController.modalPresentationStyle = .fullScreen

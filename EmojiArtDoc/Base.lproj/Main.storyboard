@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pJ8-0M-LSI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
@@ -196,7 +196,7 @@
         <!--Navigation Controller-->
         <scene sceneID="hSD-of-xqd">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pJ8-0M-LSI" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationControllerEmoji" automaticallyAdjustsScrollViewInsets="NO" id="pJ8-0M-LSI" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GQy-Ak-nPW">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>

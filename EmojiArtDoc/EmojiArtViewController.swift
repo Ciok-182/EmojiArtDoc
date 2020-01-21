@@ -78,21 +78,6 @@ class EmojiArtViewController: UIViewController {
         return UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.preferredFont(forTextStyle: .body).withSize(60))
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        //look for the directory in the sandbox
-        if let url = try? FileManager.default.url(
-            for: .documentDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true
-        ).appendingPathComponent("Untitled.json") {
-            print("URL: \(url) ")
-            document = EmojiArtDocument(fileURL: url)
-        }
-    }
     
     var document: EmojiArtDocument?
     
