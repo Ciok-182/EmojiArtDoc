@@ -12,6 +12,7 @@ class EmojiArtViewController: UIViewController {
     
     var imageFetcher: ImageFetcher!
     var emojis = "🐼🛥🌾💀🍄🌲🌴🥀🌧☁️🌩🦃🐇🐆🦜🦥🕊🦅🦆🐝🦒🦌🐿".map { String($0) }
+    var suppresBadURLWarnings = false
     
     private var addingEmoji = false
     
@@ -113,6 +114,25 @@ class EmojiArtViewController: UIViewController {
         
     }
     
+    private func presentBadURLWarning(for url: URL?){
+        if !suppresBadURLWarnings {
+            let alert = UIAlertController(
+                title: "Image transfer fail",
+                message: "Couldn't transfer the dropped image from its source\n Show this warning in the future?",
+                preferredStyle: .alert)
+            
+            
+            alert.addAction(UIAlertAction(title: "Keep warning", style: .default, handler: nil))
+            
+            alert.addAction(UIAlertAction(title: "Stop warning", style: .destructive, handler: { action in
+                self.suppresBadURLWarnings = true
+            }))
+            
+            present(alert, animated: true)
+        }
+        
+    }
+    
     // MARK: - Model
     var emojiArt: EmojiArt? {
         get {
@@ -179,12 +199,27 @@ extension EmojiArtViewController: UIDropInteractionDelegate{
         self.imageFetcher = ImageFetcher() { (url, image) in
             DispatchQueue.main.async {
                 self.emojiArtBackgroundImage = (url, image)
+                //self.documentChenged()
             }
         }
         
         session.loadObjects(ofClass: NSURL.self, completion: {nsurls in
             if let url = nsurls.first as? URL{
-                self.imageFetcher.fetch(url)
+                //self.imageFetcher.fetch(url)
+                DispatchQueue.global(qos: .userInitiated).async {
+                    if let imageData = try? Data(contentsOf: url.imageURL), let image = UIImage(data: imageData){
+                        print("OK")
+                        DispatchQueue.main.async {
+                            self.emojiArtBackgroundImage = (url, image)
+                            //self.documentChenged()
+                        }
+                    } else {
+                        print("BAD")
+                        DispatchQueue.main.async {
+                            self.presentBadURLWarning(for: url)
+                        }
+                    }
+                }
             }
         })
         
