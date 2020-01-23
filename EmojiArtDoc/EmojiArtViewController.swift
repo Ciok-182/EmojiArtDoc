@@ -13,6 +13,9 @@ class EmojiArtViewController: UIViewController {
     var imageFetcher: ImageFetcher!
     var emojis = "🐼🛥🌾💀🍄🌲🌴🥀🌧☁️🌩🦃🐇🐆🦜🦥🕊🦅🦆🐝🦒🦌🐿".map { String($0) }
     var suppresBadURLWarnings = false
+    var emojiArtView = EmojiArtView()
+
+    private var documentObserver: NSObjectProtocol?
     
     private var addingEmoji = false
     
@@ -27,7 +30,6 @@ class EmojiArtViewController: UIViewController {
         }
     }
     
-    var emojiArtView = EmojiArtView()
     @IBOutlet weak var scrollView: UIScrollView!{
         didSet{
             scrollView.minimumZoomScale = 0.1
@@ -85,31 +87,72 @@ class EmojiArtViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        document?.open(completionHandler: {success in
+        
+        // start monitoring our document's documentState
+        documentObserver = NotificationCenter.default.addObserver(
+            forName: UIDocument.stateChangedNotification,
+            object: document,
+            queue: OperationQueue.main,
+            using: { notification in
+                print("DocumentState changed to \(self.document!.documentState)")
+            }
+        )
+        
+        
+        // whenever we appear, we'll open our document
+        // (might want to close it in viewDidDisappear, by the way)
+        document?.open { success in
             if success {
                 self.title = self.document?.localizedName
+                // update our Model from the document's Model
                 self.emojiArt = self.document?.emojiArt
+                // now that our document is open
+                // start watching our EmojiArtView for changes
+                // so we can let our document know when it has changes
+                // that need to be autosaved
+                /*self.emojiArtViewObserver = NotificationCenter.default.addObserver(
+                    forName: .EmojiArtViewDidChange,
+                    object: self.emojiArtView,
+                    queue: OperationQueue.main,
+                    using: { notification in
+                        self.documentChanged()
+                    }
+                )*/
             }
-        })
+        }
+        
     }
     
-    @IBAction func saveAction(_ sender: UIBarButtonItem? = nil) {
+    private func documentChanged() {
         document?.emojiArt = emojiArt
         if document?.emojiArt != nil {
             document?.updateChangeCount(.done)
         }
     }
     
+    /*@IBAction func saveAction(_ sender: UIBarButtonItem? = nil) {
+        document?.emojiArt = emojiArt
+        if document?.emojiArt != nil {
+            document?.updateChangeCount(.done)
+        }
+    }*/
+    
     @IBAction func closeAction(_ sender: UIBarButtonItem) {
         
-        saveAction()
+        documentChanged()
         
         if document?.emojiArt != nil {
             document?.thumbnail = emojiArtView.snapshot
         }
         
         dismiss(animated: true, completion: {
-            self.document?.close()
+
+            self.document?.close(completionHandler: { success in
+                if let observer = self.documentObserver {
+                    NotificationCenter.default.removeObserver(observer)
+                }
+            } )
+
         })
         
     }
@@ -199,7 +242,7 @@ extension EmojiArtViewController: UIDropInteractionDelegate{
         self.imageFetcher = ImageFetcher() { (url, image) in
             DispatchQueue.main.async {
                 self.emojiArtBackgroundImage = (url, image)
-                //self.documentChenged()
+                self.documentChanged()
             }
         }
         
@@ -208,13 +251,13 @@ extension EmojiArtViewController: UIDropInteractionDelegate{
                 //self.imageFetcher.fetch(url)
                 DispatchQueue.global(qos: .userInitiated).async {
                     if let imageData = try? Data(contentsOf: url.imageURL), let image = UIImage(data: imageData){
-                        print("OK")
+                        print("loadObjects OK")
                         DispatchQueue.main.async {
                             self.emojiArtBackgroundImage = (url, image)
-                            //self.documentChenged()
+                            self.documentChanged()
                         }
                     } else {
-                        print("BAD")
+                        print("loadObjects BAD")
                         DispatchQueue.main.async {
                             self.presentBadURLWarning(for: url)
                         }
