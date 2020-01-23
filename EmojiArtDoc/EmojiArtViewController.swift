@@ -8,25 +8,16 @@
 
 import UIKit
 
-class EmojiArtViewController: UIViewController, EmojiArtViewDelegate {
+class EmojiArtViewController: UIViewController {
     
     var imageFetcher: ImageFetcher!
     var emojis = "🐼🛥🌾💀🍄🌲🌴🥀🌧☁️🌩🦃🐇🐆🦜🦥🕊🦅🦆🐝🦒🦌🐿".map { String($0) }
     var suppresBadURLWarnings = false
     
-    lazy var emojiArtView: EmojiArtView = {
-        let eav = EmojiArtView()
-        eav.delegate = self
-        return eav
-    }()
-    
-    // MARK: - EmojiArtViewDelegate
-    
-    func emojiArtViewDidChange(_ sender: EmojiArtView) {
-        documentChanged()
-    }
+    lazy var emojiArtView = EmojiArtView()
 
     private var documentObserver: NSObjectProtocol?
+    private var emojiArtViewObserver: NSObjectProtocol?
     
     private var addingEmoji = false
     
@@ -117,18 +108,20 @@ class EmojiArtViewController: UIViewController, EmojiArtViewDelegate {
                 self.title = self.document?.localizedName
                 // update our Model from the document's Model
                 self.emojiArt = self.document?.emojiArt
+                
                 // now that our document is open
                 // start watching our EmojiArtView for changes
                 // so we can let our document know when it has changes
                 // that need to be autosaved
-                /*self.emojiArtViewObserver = NotificationCenter.default.addObserver(
+                self.emojiArtViewObserver = NotificationCenter.default.addObserver(
                     forName: .EmojiArtViewDidChange,
                     object: self.emojiArtView,
                     queue: OperationQueue.main,
                     using: { notification in
+                        print("Received notification")
                         self.documentChanged()
                     }
-                )*/
+                )
             }
         }
         
@@ -138,6 +131,7 @@ class EmojiArtViewController: UIViewController, EmojiArtViewDelegate {
         document?.emojiArt = emojiArt
         if document?.emojiArt != nil {
             document?.updateChangeCount(.done)
+            print(" ::: Changes saved! ::: ")
         }
     }
     
@@ -150,15 +144,32 @@ class EmojiArtViewController: UIViewController, EmojiArtViewDelegate {
     
     @IBAction func closeAction(_ sender: UIBarButtonItem) {
         
-        documentChanged()
+        // when we close our document
+        // stop observing EmojiArtView changes
+        if let observer = emojiArtViewObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
         
+        // the call to save() that used to be here has been removed
+        // because we no longer explicitly save our document
+        // we just mark that it has been changed
+        // and since we are reliably doing that now
+        // we don't need to try to save it when we close it
+        // UIDocument will automatically autosave when we close()
+        // if it has any unsaved changes
+        // the rest of this method is unchanged from lecture 14
+        // set a nice thumbnail instead of an icon for our document
         if document?.emojiArt != nil {
             document?.thumbnail = emojiArtView.snapshot
         }
         
+        // dismiss ourselves from having been presented modally
+        // and when we're done, close our document
         dismiss(animated: true, completion: {
 
             self.document?.close(completionHandler: { success in
+                // when our document completes closing
+                // stop observing its documentState changes
                 if let observer = self.documentObserver {
                     NotificationCenter.default.removeObserver(observer)
                 }

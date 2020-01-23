@@ -66,6 +66,7 @@ extension EmojiArtView : UIDropInteractionDelegate{
             for attributedString in providers as? [NSAttributedString] ?? [] {
                 self.addLabel(with: attributedString, centeredAt: dropPoint)
                 self.delegate?.emojiArtViewDidChange(self)
+                NotificationCenter.default.post(name: .EmojiArtViewDidChange, object: self)
             }
         })
     }
@@ -79,4 +80,8 @@ extension EmojiArtView : UIDropInteractionDelegate{
         addEmojiArtGestureRecognizers(to: label)
         addSubview(label)
     }
+}
+
+extension Notification.Name {
+    static let EmojiArtViewDidChange = Notification.Name("EmojiArtViewDidChange")
 }
