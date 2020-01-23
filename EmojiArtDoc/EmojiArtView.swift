@@ -18,7 +18,7 @@ class EmojiArtView: UIView {
     
     weak var delegate: EmojiArtViewDelegate?
     
-    
+    private var labelObservations = [UIView: NSKeyValueObservation]()
     
     //MARK: - Initialization
     
@@ -46,6 +46,13 @@ class EmojiArtView: UIView {
         backgroundImage?.draw(in: bounds)
     }
     
+    override func willRemoveSubview(_ subview: UIView) {
+        super.willRemoveSubview(subview)
+        if labelObservations[subview] != nil {
+            labelObservations[subview] = nil
+        }
+    }
+    
     
 }
 
@@ -71,6 +78,8 @@ extension EmojiArtView : UIDropInteractionDelegate{
         })
     }
     
+    
+    
     func addLabel(with attributedString: NSAttributedString, centeredAt point: CGPoint) {
         let label = UILabel()
         label.backgroundColor = .clear
@@ -79,6 +88,11 @@ extension EmojiArtView : UIDropInteractionDelegate{
         label.center = point
         addEmojiArtGestureRecognizers(to: label)
         addSubview(label)
+        
+        labelObservations[label] = label.observe(\.center) { (label, change) in
+            self.delegate?.emojiArtViewDidChange(self)
+            NotificationCenter.default.post(name: .EmojiArtViewDidChange, object: self)
+        }
     }
 }
 
