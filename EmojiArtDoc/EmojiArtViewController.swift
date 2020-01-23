@@ -8,12 +8,23 @@
 
 import UIKit
 
-class EmojiArtViewController: UIViewController {
+class EmojiArtViewController: UIViewController, EmojiArtViewDelegate {
     
     var imageFetcher: ImageFetcher!
     var emojis = "🐼🛥🌾💀🍄🌲🌴🥀🌧☁️🌩🦃🐇🐆🦜🦥🕊🦅🦆🐝🦒🦌🐿".map { String($0) }
     var suppresBadURLWarnings = false
-    var emojiArtView = EmojiArtView()
+    
+    lazy var emojiArtView: EmojiArtView = {
+        let eav = EmojiArtView()
+        eav.delegate = self
+        return eav
+    }()
+    
+    // MARK: - EmojiArtViewDelegate
+    
+    func emojiArtViewDidChange(_ sender: EmojiArtView) {
+        documentChanged()
+    }
 
     private var documentObserver: NSObjectProtocol?
     
