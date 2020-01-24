@@ -203,17 +203,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ont-6Q-aiY">
-                                <rect key="frame" x="181" y="229" width="350" height="270"/>
+                                <rect key="frame" x="181" y="223" width="350" height="282"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PSg-xB-tE7">
-                                        <rect key="frame" x="0.0" y="0.0" width="350" height="221"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="233"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="350" id="7IV-ej-IZV"/>
-                                            <constraint firstAttribute="width" secondItem="PSg-xB-tE7" secondAttribute="height" multiplier="19:12" id="qHG-or-tZS"/>
+                                            <constraint firstAttribute="width" secondItem="PSg-xB-tE7" secondAttribute="height" multiplier="18:12" id="qHG-or-tZS"/>
                                         </constraints>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="ebo-dF-arr">
-                                        <rect key="frame" x="73.5" y="229" width="203.5" height="41"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ebo-dF-arr">
+                                        <rect key="frame" x="78.5" y="241" width="193.5" height="41"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="LUU-OE-0yK">
                                                 <rect key="frame" x="0.0" y="0.0" width="66" height="41"/>
@@ -233,7 +233,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pjo-qF-ffQ">
-                                                <rect key="frame" x="84" y="0.0" width="119.5" height="41"/>
+                                                <rect key="frame" x="74" y="0.0" width="119.5" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99 bytes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26z-qF-Soa">
                                                         <rect key="frame" x="0.0" y="0.0" width="67.5" height="20.5"/>
@@ -278,6 +278,7 @@
                     <connections>
                         <outlet property="createdLabel" destination="lK3-gx-KM6" id="tdw-2h-CAr"/>
                         <outlet property="sizeLabel" destination="26z-qF-Soa" id="idb-cv-YnU"/>
+                        <outlet property="thumbnailAspectRatio" destination="qHG-or-tZS" id="WfO-8Z-KHT"/>
                         <outlet property="thumbnailImageView" destination="PSg-xB-tE7" id="J3Z-Rl-ZoQ"/>
                     </connections>
                 </viewController>

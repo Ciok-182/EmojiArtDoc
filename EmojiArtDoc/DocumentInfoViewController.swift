@@ -19,6 +19,8 @@ class DocumentInfoViewController: UIViewController {
     @IBOutlet weak var sizeLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
     
+    @IBOutlet weak var thumbnailAspectRatio: NSLayoutConstraint!
+    
     @IBAction func done() {
         presentingViewController?.dismiss(animated: true)
     }
@@ -46,8 +48,22 @@ class DocumentInfoViewController: UIViewController {
             }
         }
         
-        if thumbnailImageView != nil, let thumbnail = document?.thumbnail{
+        if thumbnailImageView != nil, let thumbnail = document?.thumbnail, thumbnailAspectRatio != nil {
             thumbnailImageView.image = thumbnail
+            thumbnailImageView.removeConstraint(thumbnailAspectRatio)
+            
+            thumbnailAspectRatio = NSLayoutConstraint(
+                item: thumbnailImageView!,
+                attribute: .width,
+                relatedBy: .equal,
+                toItem: thumbnailImageView,
+                attribute: .height,
+                multiplier: thumbnail.size.width / thumbnail.size.height,
+                constant: 0
+            )
+
+            thumbnailImageView.addConstraint(thumbnailAspectRatio)
+
         }
     }
     
