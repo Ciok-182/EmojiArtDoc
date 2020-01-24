@@ -20,6 +20,7 @@
 		3E6AC36523D7B12800C74DFB /* TextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AC35E23D7B12800C74DFB /* TextFieldCollectionViewCell.swift */; };
 		3E6AC36623D7B12800C74DFB /* EmojiArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AC35F23D7B12800C74DFB /* EmojiArt.swift */; };
 		3E6AC36723D7B12800C74DFB /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AC36023D7B12800C74DFB /* EmojiCollectionViewCell.swift */; };
+		3EC88F9C23DA61E600945C7B /* DocumentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC88F9B23DA61E600945C7B /* DocumentInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		3E6AC35E23D7B12800C74DFB /* TextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
 		3E6AC35F23D7B12800C74DFB /* EmojiArt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiArt.swift; sourceTree = "<group>"; };
 		3E6AC36023D7B12800C74DFB /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
+		3EC88F9B23DA61E600945C7B /* DocumentInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			children = (
 				3E6AC35923D7AF4500C74DFB /* Supporting Files */,
 				3E6AC34523D7AE0E00C74DFB /* DocumentBrowserViewController.swift */,
+				3EC88F9B23DA61E600945C7B /* DocumentInfoViewController.swift */,
 				3E6AC35F23D7B12800C74DFB /* EmojiArt.swift */,
 				3E6AC35A23D7B12700C74DFB /* EmojiArtView.swift */,
 				3E6AC35C23D7B12700C74DFB /* EmojiArtView+Gestures.swift */,
@@ -167,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC88F9C23DA61E600945C7B /* DocumentInfoViewController.swift in Sources */,
 				3E6AC36623D7B12800C74DFB /* EmojiArt.swift in Sources */,
 				3E6AC34A23D7AE0E00C74DFB /* EmojiArtDocument.swift in Sources */,
 				3E6AC34623D7AE0E00C74DFB /* DocumentBrowserViewController.swift in Sources */,

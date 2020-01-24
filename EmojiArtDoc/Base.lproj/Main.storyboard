@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +12,7 @@
         <!--Document Browser View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="DocumentBrowserViewController" customModule="EmojiArtDoc" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="crossDissolve" id="BYZ-38-t0r" customClass="DocumentBrowserViewController" customModule="EmojiArtDoc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -175,6 +176,11 @@
                                 <action selector="closeAction:" destination="D0O-Lm-6cO" id="EYw-73-Tw2"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Inspect" id="Onm-zI-xfy">
+                            <connections>
+                                <segue destination="sWd-kn-OY6" kind="presentation" identifier="Show document info" id="bgF-rN-XPe"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dropZone" destination="FXu-Or-RaE" id="Boy-WN-zUz"/>
@@ -188,10 +194,101 @@
             </objects>
             <point key="canvasLocation" x="853.05755395683457" y="138.84892086330936"/>
         </scene>
+        <!--Document Info View Controller-->
+        <scene sceneID="fYy-BG-V9z">
+            <objects>
+                <viewController id="sWd-kn-OY6" customClass="DocumentInfoViewController" customModule="EmojiArtDoc" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4an-6F-kOz">
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="728"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ont-6Q-aiY">
+                                <rect key="frame" x="181" y="229" width="350" height="270"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PSg-xB-tE7">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="221"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="350" id="7IV-ej-IZV"/>
+                                            <constraint firstAttribute="width" secondItem="PSg-xB-tE7" secondAttribute="height" multiplier="19:12" id="qHG-or-tZS"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="ebo-dF-arr">
+                                        <rect key="frame" x="73.5" y="229" width="203.5" height="41"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="LUU-OE-0yK">
+                                                <rect key="frame" x="0.0" y="0.0" width="66" height="41"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L77-yD-3qI">
+                                                        <rect key="frame" x="29" y="0.0" width="37" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cU-d5-25c">
+                                                        <rect key="frame" x="0.0" y="20.5" width="66" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pjo-qF-ffQ">
+                                                <rect key="frame" x="84" y="0.0" width="119.5" height="41"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99 bytes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26z-qF-Soa">
+                                                        <rect key="frame" x="0.0" y="0.0" width="67.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11/11/11 11:11pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lK3-gx-KM6">
+                                                        <rect key="frame" x="0.0" y="20.5" width="119.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JfX-4D-To1">
+                                <rect key="frame" x="25" y="25.5" width="25" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="Jbz-mY-k0q"/>
+                                    <constraint firstAttribute="height" constant="25" id="MzC-5j-geQ"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" backgroundImage="x.circle" catalog="system"/>
+                                <connections>
+                                    <action selector="done" destination="sWd-kn-OY6" eventType="touchUpInside" id="jYq-9x-KHe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Ont-6Q-aiY" firstAttribute="centerX" secondItem="4an-6F-kOz" secondAttribute="centerX" id="7Oa-yA-Npn"/>
+                            <constraint firstItem="Ont-6Q-aiY" firstAttribute="centerY" secondItem="4an-6F-kOz" secondAttribute="centerY" id="Ir3-dr-jXv"/>
+                            <constraint firstItem="JfX-4D-To1" firstAttribute="top" secondItem="ekM-Zr-euh" secondAttribute="top" constant="25" id="drJ-lu-4b8"/>
+                            <constraint firstItem="JfX-4D-To1" firstAttribute="leading" secondItem="ekM-Zr-euh" secondAttribute="leading" constant="25" id="wGy-Uo-5D4"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ekM-Zr-euh"/>
+                    </view>
+                    <connections>
+                        <outlet property="createdLabel" destination="lK3-gx-KM6" id="tdw-2h-CAr"/>
+                        <outlet property="sizeLabel" destination="26z-qF-Soa" id="idb-cv-YnU"/>
+                        <outlet property="thumbnailImageView" destination="PSg-xB-tE7" id="J3Z-Rl-ZoQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uXx-aN-1x6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1570.8984375" y="137.5"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="hSD-of-xqd">
             <objects>
-                <navigationController storyboardIdentifier="NavigationControllerEmoji" automaticallyAdjustsScrollViewInsets="NO" id="pJ8-0M-LSI" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationControllerEmoji" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" modalPresentationStyle="fullScreen" id="pJ8-0M-LSI" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GQy-Ak-nPW">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
@@ -207,4 +304,7 @@
             <point key="canvasLocation" x="138.66906474820144" y="138.84892086330936"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="x.circle" catalog="system" width="64" height="60"/>
+    </resources>
 </document>

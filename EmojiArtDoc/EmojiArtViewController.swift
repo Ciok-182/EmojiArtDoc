@@ -165,8 +165,7 @@ class EmojiArtViewController: UIViewController {
         
         // dismiss ourselves from having been presented modally
         // and when we're done, close our document
-        dismiss(animated: true, completion: {
-
+        presentingViewController?.dismiss(animated: true, completion: {
             self.document?.close(completionHandler: { success in
                 // when our document completes closing
                 // stop observing its documentState changes
@@ -174,9 +173,7 @@ class EmojiArtViewController: UIViewController {
                     NotificationCenter.default.removeObserver(observer)
                 }
             } )
-
-        })
-        
+        })        
     }
     
     private func presentBadURLWarning(for url: URL?){
@@ -222,6 +219,17 @@ class EmojiArtViewController: UIViewController {
                         }
                     }
                 })
+            }
+        }
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Show document info" {
+            if let destination = segue.destination.contents as? DocumentInfoViewController {
+                document?.thumbnail = emojiArtView.snapshot
+                destination.document = document
             }
         }
     }
