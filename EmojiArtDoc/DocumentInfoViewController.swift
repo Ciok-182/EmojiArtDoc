@@ -18,6 +18,7 @@ class DocumentInfoViewController: UIViewController {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var sizeLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
+    @IBOutlet weak var topLevelView: UIStackView!
     
     @IBOutlet weak var thumbnailAspectRatio: NSLayoutConstraint!
     
@@ -28,6 +29,13 @@ class DocumentInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let fittedSize = topLevelView?.sizeThatFits(UIView.layoutFittingCompressedSize){
+            preferredContentSize = CGSize(width: fittedSize.width + 30, height: fittedSize.height + 30)
+        }
     }
     
     private let shortDateFormatter: DateFormatter = {
