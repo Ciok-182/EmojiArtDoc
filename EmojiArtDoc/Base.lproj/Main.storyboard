@@ -286,6 +286,7 @@
                     </view>
                     <connections>
                         <outlet property="createdLabel" destination="lK3-gx-KM6" id="tdw-2h-CAr"/>
+                        <outlet property="returnToDocument" destination="JfX-4D-To1" id="TCt-RB-169"/>
                         <outlet property="sizeLabel" destination="26z-qF-Soa" id="idb-cv-YnU"/>
                         <outlet property="thumbnailAspectRatio" destination="qHG-or-tZS" id="WfO-8Z-KHT"/>
                         <outlet property="thumbnailImageView" destination="PSg-xB-tE7" id="J3Z-Rl-ZoQ"/>
