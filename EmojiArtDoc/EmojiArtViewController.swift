@@ -20,6 +20,10 @@ class EmojiArtViewController: UIViewController {
     private var emojiArtViewObserver: NSObjectProtocol?
     
     private var addingEmoji = false
+    @IBOutlet weak var embeddedDocInfoHeight: NSLayoutConstraint!
+    @IBOutlet weak var embeddedDocInfoWidth: NSLayoutConstraint!
+    
+    private var embeddedDocInfo: DocumentInfoViewController?
     
     @IBAction func addEmoji(_ sender: UIButton) {
         addingEmoji = true
@@ -97,6 +101,11 @@ class EmojiArtViewController: UIViewController {
             queue: OperationQueue.main,
             using: { notification in
                 print("DocumentState changed to \(self.document!.documentState)")
+                if self.document!.documentState == .normal, let docInfoVC = self.embeddedDocInfo {
+                    docInfoVC.document = self.document
+                    self.embeddedDocInfoWidth.constant = docInfoVC.preferredContentSize.width
+                    self.embeddedDocInfoHeight.constant = docInfoVC.preferredContentSize.height
+                }
             }
         )
         
@@ -235,6 +244,10 @@ class EmojiArtViewController: UIViewController {
                     ppc.delegate = self
                 }
             }
+        }
+            // MARK: - Embed Segue
+        else if segue.identifier == "Embed document info segue"{
+            embeddedDocInfo = segue.destination.contents as? DocumentInfoViewController
         }
     }
     

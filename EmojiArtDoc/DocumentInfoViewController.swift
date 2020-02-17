@@ -24,6 +24,8 @@ class DocumentInfoViewController: UIViewController {
     
     @IBOutlet weak var thumbnailAspectRatio: NSLayoutConstraint!
     
+    
+    
     @IBAction func done() {
         presentingViewController?.dismiss(animated: true)
     }
