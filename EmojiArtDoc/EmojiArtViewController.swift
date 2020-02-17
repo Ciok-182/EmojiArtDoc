@@ -142,7 +142,7 @@ class EmojiArtViewController: UIViewController {
         }
     }*/
     
-    @IBAction func closeAction(_ sender: UIBarButtonItem) {
+    @IBAction func closeAction(_ sender: Any) {
         
         // when we close our document
         // stop observing EmojiArtView changes
@@ -238,6 +238,12 @@ class EmojiArtViewController: UIViewController {
         }
     }
     
+    // MARK: - Unwind Segue
+    @IBAction func close(bySegue: UIStoryboardSegue){
+        print("Close by unwind segue")
+        closeAction(self)
+        //bySegue.source
+    }
 
 }
 
