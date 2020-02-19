@@ -64,5 +64,7 @@
 	<array>
 		<dict/>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) requiere acceder a su cámara</string>
 </dict>
 </plist>

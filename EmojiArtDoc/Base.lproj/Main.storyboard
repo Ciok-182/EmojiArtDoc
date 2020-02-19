@@ -201,9 +201,15 @@
                                     </segue>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem systemItem="camera" id="Vh6-5K-P3y">
+                                <connections>
+                                    <action selector="takeBackgroundPhoto:" destination="D0O-Lm-6cO" id="WLh-JO-wZq"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="cameraButton" destination="Vh6-5K-P3y" id="u5j-pi-q9v"/>
                         <outlet property="dropZone" destination="FXu-Or-RaE" id="Boy-WN-zUz"/>
                         <outlet property="embeddedDocInfoHeight" destination="R48-db-xdx" id="TZa-og-vuy"/>
                         <outlet property="embeddedDocInfoWidth" destination="UCB-lQ-qUF" id="j9C-wN-f1o"/>
@@ -222,11 +228,11 @@
             <objects>
                 <viewController id="sWd-kn-OY6" customClass="DocumentInfoViewController" customModule="EmojiArtDoc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4an-6F-kOz">
-                        <rect key="frame" x="0.0" y="0.0" width="388" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ont-6Q-aiY">
-                                <rect key="frame" x="19" y="173.5" width="350" height="320"/>
+                                <rect key="frame" x="95" y="150" width="350" height="320"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PSg-xB-tE7">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="233"/>
@@ -286,7 +292,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JfX-4D-To1">
-                                <rect key="frame" x="38" y="25.5" width="25" height="24"/>
+                                <rect key="frame" x="25" y="25.5" width="25" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="Jbz-mY-k0q"/>
                                     <constraint firstAttribute="height" constant="25" id="MzC-5j-geQ"/>
@@ -392,6 +398,7 @@
                             <constraint firstItem="rEn-nk-8MB" firstAttribute="centerY" secondItem="rmu-Bf-TSE" secondAttribute="centerY" id="C1s-0F-pPi"/>
                             <constraint firstItem="rEn-nk-8MB" firstAttribute="centerX" secondItem="rmu-Bf-TSE" secondAttribute="centerXWithinMargins" id="r4D-H1-1U7"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="8wS-tR-a8O"/>
                     </view>
                     <connections>
                         <outlet property="createdLabel" destination="qE5-3b-Xgv" id="g6D-AO-RrS"/>
@@ -449,6 +456,6 @@
         <image name="x.circle" catalog="system" width="64" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QBw-M9-Dg6"/>
+        <segue reference="bgF-rN-XPe"/>
     </inferredMetricsTieBreakers>
 </document>

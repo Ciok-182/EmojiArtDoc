@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 class EmojiArtViewController: UIViewController {
     
@@ -18,6 +19,23 @@ class EmojiArtViewController: UIViewController {
 
     private var documentObserver: NSObjectProtocol?
     private var emojiArtViewObserver: NSObjectProtocol?
+    
+    // MARK: - Camera
+    @IBOutlet weak var cameraButton: UIBarButtonItem! {
+        didSet{
+            cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        }
+    }
+    
+    @IBAction func takeBackgroundPhoto(_ sender: UIBarButtonItem) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.mediaTypes = [kUTTypeImage as String]  //only image, not video
+        picker.allowsEditing = true
+        picker.delegate  = self
+        present(picker, animated: true)
+    }
+    
     
     private var addingEmoji = false
     @IBOutlet weak var embeddedDocInfoHeight: NSLayoutConstraint!
@@ -94,43 +112,46 @@ class EmojiArtViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // start monitoring our document's documentState
-        documentObserver = NotificationCenter.default.addObserver(
-            forName: UIDocument.stateChangedNotification,
-            object: document,
-            queue: OperationQueue.main,
-            using: { notification in
-                print("DocumentState changed to \(self.document!.documentState)")
-                if self.document!.documentState == .normal, let docInfoVC = self.embeddedDocInfo {
-                    docInfoVC.document = self.document
-                    self.embeddedDocInfoWidth.constant = docInfoVC.preferredContentSize.width
-                    self.embeddedDocInfoHeight.constant = docInfoVC.preferredContentSize.height
-                }
-            }
-        )
-        
-        
-        // whenever we appear, we'll open our document
-        // (might want to close it in viewDidDisappear, by the way)
-        document?.open { success in
-            if success {
-                self.title = self.document?.localizedName
-                // update our Model from the document's Model
-                self.emojiArt = self.document?.emojiArt
-                
-                // now that our document is open
-                // start watching our EmojiArtView for changes
-                // so we can let our document know when it has changes
-                // that need to be autosaved
-                self.emojiArtViewObserver = NotificationCenter.default.addObserver(
-                    forName: .EmojiArtViewDidChange,
-                    object: self.emojiArtView,
-                    queue: OperationQueue.main,
-                    using: { notification in
-                        print("Received notification")
-                        self.documentChanged()
+        if document?.documentState != .normal {
+            
+            // start monitoring our document's documentState
+            documentObserver = NotificationCenter.default.addObserver(
+                forName: UIDocument.stateChangedNotification,
+                object: document,
+                queue: OperationQueue.main,
+                using: { notification in
+                    print("DocumentState changed to \(self.document!.documentState)")
+                    if self.document!.documentState == .normal, let docInfoVC = self.embeddedDocInfo {
+                        docInfoVC.document = self.document
+                        self.embeddedDocInfoWidth.constant = docInfoVC.preferredContentSize.width
+                        self.embeddedDocInfoHeight.constant = docInfoVC.preferredContentSize.height
                     }
-                )
+                }
+            )
+            
+            
+            // whenever we appear, we'll open our document
+            // (might want to close it in viewDidDisappear, by the way)
+            document?.open { success in
+                if success {
+                    self.title = self.document?.localizedName
+                    // update our Model from the document's Model
+                    self.emojiArt = self.document?.emojiArt
+                    
+                    // now that our document is open
+                    // start watching our EmojiArtView for changes
+                    // so we can let our document know when it has changes
+                    // that need to be autosaved
+                    self.emojiArtViewObserver = NotificationCenter.default.addObserver(
+                        forName: .EmojiArtViewDidChange,
+                        object: self.emojiArtView,
+                        queue: OperationQueue.main,
+                        using: { notification in
+                            print("Received notification")
+                            self.documentChanged()
+                        }
+                    )
+                }
             }
         }
         
@@ -480,4 +501,24 @@ extension EmojiArtViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension EmojiArtViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.presentingViewController?.dismiss(animated: true)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.presentingViewController?.dismiss(animated: true)
+        
+        if let image = ((info[UIImagePickerController.InfoKey.editedImage] ?? info[UIImagePickerController.InfoKey.originalImage]) as? UIImage)?.scaled(by: 0.25) {
+            let url = image.storeLocallyAsJPEG(named: String(Date.timeIntervalSinceReferenceDate))
+            emojiArtBackgroundImage = (url, image)
+            documentChanged()
+        }
+    }
+    
 }
